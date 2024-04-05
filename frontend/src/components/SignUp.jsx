@@ -1,11 +1,82 @@
 import React from 'react'
 import CreatorSVG from "../assets/creators.svg";
+import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import Loader from './Loader';
 export default function SignUp() {
+    const navigate = useNavigate();
+    const [loading, setLoading] = useState(false);
+    const [formData, setFormData] = useState({
+        name: '',
+        username: '',
+        email: '',
+        password: '',
+    });
+    const [usernameError, setUserNameError] = useState(false);
+    const [emailError, setEmailError] = useState(false);
+    const [passwordError, setPasswordError] = useState(false);
+    function handleChange(identifier, event) {
+        if (identifier === 'username') {
+            setUserNameError(false);
+        }
+        if (identifier === 'email') {
+            setEmailError(false);
+        }
+        if (identifier === 'password') {
+            setPasswordError(false);
+        }
+        setFormData((prevFormData) => ({
+            ...prevFormData,
+            [identifier]: event.target.value
+        }))
+    }
+    async function handleSubmit(event) {
+        event.preventDefault();
+        if (formData.password.length < 6) {
+            setPasswordError(true);
+            return;
+        }
+        console.log(formData);
+        try {
+            setLoading(true);
+            const response = await fetch('http://localhost:3000/signup', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData)
+            })
+            const data = await response.json();
+            setLoading(false);
+            if (data.success) {
+                localStorage.setItem('token', data.token);
+                localStorage.setItem('userId', data.userId);
+                navigate('/create-profile');
+            }
+            else if (!data.success) {
+                if (data.message === 'username already taken') {
+                    setUserNameError(true);
+                }
+                else if (data.message === 'email already taken') {
+                    setEmailError(true);
+                }
+                else {
+                    alert(data.message);
+                }
+            }
+        }
+        catch (error) {
+            console.log(error);
+            alert("Error signing up. Please try again.");
+            return;
+        }
+    }
     return (
         <>
+            {loading && <Loader />}
             <div className="flex h-screen">
                 <div className="hidden md:block h-screen bg-yellow-500/45 px-14 w-[400px] lg:w-[600px]">
-                    <div class="flex flex-col justify-evenly h-full">
+                    <div className="flex flex-col justify-evenly h-full">
                         <div>
                             <h1 className="font-header mb-5 text-lg text-yellow-700/80 tracking-widest">dribbble</h1>
                             <h1 className="text-xl font-extrabold text-yellow-900/80 font-inter">Discover the world's top Designers and Creatives.</h1>
@@ -17,7 +88,7 @@ export default function SignUp() {
                     </div>
                 </div>
                 <div className="h-full pt-3 w-full overflow-auto">
-                    <div class="flex flex-row justify-end w-full pr-5">
+                    <div className="flex flex-row justify-end w-full pr-5">
                         <p className="font-medium">Already a member? <span><a href="#" className="text-[#816391]">Sign In</a></span></p>
                     </div>
                     <div className="flex flex-col items-center gap-2.5 w-full">
@@ -27,33 +98,37 @@ export default function SignUp() {
                         </div>
 
                         {/* form validation sentence */}
-                        <div class="flex flex-col items-center pt-12">
-                            <form action="" className="flex flex-col gap-10">
+                        {usernameError && <p className="font-medium text-red-500 w-[344px] sm:w-[524px] md:w-[424px]"> &bull; Username already taken</p>}
+                        {emailError && <p className="font-medium text-red-500 w-[344px] sm:w-[524px] md:w-[424px]"> &bull; Email already taken</p>}
+                        {passwordError && <p className="font-medium text-red-500 w-[344px] sm:w-[524px] md:w-[424px]"> &bull; Password should contain at least 6 letters</p>}
+                        {/* form validation sentence */}
+                        <div className="flex flex-col items-center pt-12">
+                            <form action="" className="flex flex-col gap-10" onSubmit={handleSubmit}>
                                 <div className="flex flex-row justify-center gap-6">
                                     <div className="flex flex-col">
                                         <label htmlFor="name" className="text-bold">Name</label>
-                                        <input type="text" id="name" className="bg-slate-200 px-2 py-1 rounded-md text-sm font-medium w-[160px] sm:w-[250px] md:w-[200px]" />
+                                        <input type="text" id="name" required onChange={(event) => handleChange('name', event)} className="bg-slate-200 px-2 py-1 rounded-md text-sm font-medium w-[160px] sm:w-[250px] md:w-[200px]" />
                                     </div>
                                     <div className="flex flex-col">
                                         <label htmlFor="username" className="text-bold">Username</label>
-                                        <input type="text" id="username" className="bg-slate-200 px-2 py-1 text-sm font-medium rounded-md w-[160px] sm:w-[250px] md:w-[200px]" />
+                                        <input type="text" id="username" required onChange={(event) => handleChange('username', event)} className="bg-slate-200 px-2 py-1 text-sm font-medium rounded-md w-[160px] sm:w-[250px] md:w-[200px]" />
                                     </div>
                                 </div>
                                 <div className="flex flex-row justify-center">
                                     <div className="flex flex-col w-[344px] sm:w-[524px] md:w-[424px]">
                                         <label htmlFor="email" className="text-bold ">Email</label>
-                                        <input type="text" id="email" className="bg-slate-200 px-2 py-1 text-sm font-medium rounded-md" />
+                                        <input type="text" id="email" required onChange={(event) => handleChange('email', event)} className="bg-slate-200 px-2 py-1 text-sm font-medium rounded-md" />
                                     </div>
                                 </div>
                                 <div className="flex flex-row justify-center">
                                     <div className="flex flex-col w-[344px] sm:w-[524px] md:w-[424px]">
                                         <label htmlFor="password" className="text-bold">Password</label>
-                                        <input type="password" id="password" className="bg-slate-200 px-2 py-1 text-sm font-medium rounded-md" placeholder="6+ characters" />
+                                        <input type="password" id="password" required onChange={(event) => handleChange('password', event)} className="bg-slate-200 px-2 py-1 text-sm font-medium rounded-md" placeholder="6+ characters" />
                                     </div>
                                 </div>
                                 <div className="flex flex-row justify-center">
                                     <div className="flex flex-row w-[344px] sm:w-[524px] md:w-[424px]" >
-                                        <input type="checkbox" id="pp" className="mr-2 w-8 h-8 rounded-none border-none" />
+                                        <input type="checkbox" id="pp" className="mr-2 w-8 h-8 rounded-none border-none" required />
                                         <label htmlFor="pp" className="text-sm">Creating an account means you're okay with our <span className="text-[#b271d4] font-medium"><a href="">Terms of Service</a></span>,<span className="text-[#b271d4] font-medium"><a href="">Privacy Policy</a></span>, and our default <span className="text-[#b271d4] font-medium"><a href="">Notification Settings.</a></span></label>
                                     </div>
                                 </div>
