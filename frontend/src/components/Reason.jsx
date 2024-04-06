@@ -20,7 +20,7 @@ export default function Reason() {
     async function handleFinish() {
         // send a verification email to the user , so sending a post request to the backend 
         setLoader(true);
-        const response = await fetch("http://localhost:3000/send-email", {
+        const response = await fetch("https://aeonaxy-assignment.onrender.com/send-email", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -44,7 +44,7 @@ export default function Reason() {
             navigate('/');
         }
         async function fetchDetails() {
-            const result = await fetch(`http://localhost:3000/get-profile/${uid}`).then(res => res.json());
+            const result = await fetch(`https://aeonaxy-assignment.onrender.com/get-profile/${uid}`).then(res => res.json());
             if (result.success) {
                 setUserDetails(result.data);
             } else {

@@ -39,7 +39,7 @@ export default function SignUp() {
         console.log(formData);
         try {
             setLoading(true);
-            const response = await fetch('http://localhost:3000/signup', {
+            const response = await fetch('https://aeonaxy-assignment.onrender.com/signup', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

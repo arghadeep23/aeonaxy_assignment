@@ -12,7 +12,7 @@ export default function VerifyMail() {
             navigate('/');
         }
         async function fetchDetails() {
-            const result = await fetch(`http://localhost:3000/get-profile/${uid}`).then(res => res.json());
+            const result = await fetch(`https://aeonaxy-assignment.onrender.com/get-profile/${uid}`).then(res => res.json());
             if (result.success) {
                 setUserDetails(result.data);
             } else {

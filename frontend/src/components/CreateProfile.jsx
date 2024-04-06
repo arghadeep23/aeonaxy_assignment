@@ -36,7 +36,7 @@ export default function CreateProfile() {
             .then(res => res.json())
             .then(
                 async (data) => {
-                    await fetch(`http://localhost:3000/create-profile/${userId}`, {
+                    await fetch(`https://aeonaxy-assignment.onrender.com/create-profile/${userId}`, {
                         method: "POST",
                         headers: {
                             "Content-Type": "application/json"
