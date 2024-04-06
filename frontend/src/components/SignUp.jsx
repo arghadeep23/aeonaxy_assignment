@@ -75,8 +75,8 @@ export default function SignUp() {
         <>
             {loading && <Loader />}
             <div className="flex h-screen">
-                <div className="hidden md:block h-screen bg-yellow-500/45 px-14 w-[400px] lg:w-[600px]">
-                    <div className="flex flex-col justify-evenly h-full">
+                <div className="hidden md:block h-full bg-yellow-500/45 px-14 w-[400px] tablet:w-[600px]">
+                    <div className="flex flex-col justify-evenly h-auto pt-16 gap-y-14">
                         <div>
                             <h1 className="font-header mb-5 text-lg text-yellow-700/80 tracking-widest">dribbble</h1>
                             <h1 className="text-xl font-extrabold text-yellow-900/80 font-inter">Discover the world's top Designers and Creatives.</h1>
