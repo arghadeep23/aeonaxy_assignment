@@ -1,10 +1,14 @@
 import React from 'react'
 import Navbar from './Navbar'
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Hire from "../assets/hire.svg"
 import Working from "../assets/working.svg";
 import Ideas from "../assets/ideas.svg";
+import Loader from './Loader';
 export default function Reason() {
+    const navigate = useNavigate();
+    const [userDetails, setUserDetails] = useState({});
     const [select, setSelect] = useState({
         designer: false,
         hiring: false,
@@ -13,8 +17,46 @@ export default function Reason() {
     function handleSelect(mode, event) {
         setSelect({ ...select, [mode]: event.target.checked })
     }
+    async function handleFinish() {
+        // send a verification email to the user , so sending a post request to the backend 
+        setLoader(true);
+        const response = await fetch("http://localhost:3000/send-email", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                email: userDetails.email
+            })
+        }).then((res) => res.json());
+        setLoader(false);
+        if (response.success) {
+            navigate("/verify-mail");
+        }
+        else {
+            navigate("/");
+        }
+    }
+    useEffect(() => {
+        const token = localStorage.getItem('token');
+        const uid = localStorage.getItem('userId');
+        if (!token || !uid) {
+            navigate('/');
+        }
+        async function fetchDetails() {
+            const result = await fetch(`http://localhost:3000/get-profile/${uid}`).then(res => res.json());
+            if (result.success) {
+                setUserDetails(result.data);
+            } else {
+                navigate('/');
+            }
+        }
+        fetchDetails();
+    }, [])
+    const [loader, setLoader] = useState(false);
     return (
         <>
+            {loader && <Loader />}
             <Navbar />
             <div className="w-full font-inter md:px-8">
                 <div className="text-center w-full mt-12 sm:mt-0 mb-20">
@@ -52,7 +94,7 @@ export default function Reason() {
                     <li className="w-[290px] h-[330px]" onClick={(event) => handleSelect('hiring', event)}>
                         <input type="checkbox" id="flowbite-option" value="" className="hidden peer" />
                         <label htmlFor="flowbite-option" className="inline-flex items-center justify-between w-full p-5 bg-white border-2 border-gray-200 rounded-2xl cursor-pointer hover:border-pink-500 peer-checked:border-pink-500 h-full">
-                            <div className={`flex flex-col items-center ease-in delay-700 ${select.hiring ? "top-[-40px] relative" : ""}`}>
+                            <div className={`flex flex-col items-center justify-center ease-in delay-700 ${select.hiring ? "top-[-40px] relative" : ""}`}>
                                 <img src={Hire} alt="" className="w-[80%] h-auto object-contain" />
                                 <div className="w-[80%] text-base font-semibold text-center mb-2">I'm looking to hire a designer</div>
                                 {select.hiring && <div className="w-full text-sm text-center">With access to a diverse pool of skilled designers, find the right candidate and bring your vision to life.</div>}
@@ -109,7 +151,7 @@ export default function Reason() {
                         <p className="font-semibold">Anything else? You can select multiple</p>
                     </div>}
                     <div className="mt-4">
-                        <button className="bg-[#EA4B8B] px-10 py-1 w-40 rounded-md text-white hover:bg-[#ea4b8bc4] text-sm font-medium">Finish</button>
+                        <button onClick={handleFinish} className="bg-[#EA4B8B] px-10 py-1 w-40 rounded-md text-white hover:bg-[#ea4b8bc4] text-sm font-medium">Finish</button>
                         {(select.hiring || select.designer || select.looking) && <p className="text-xs font-medium mt-2">or Press RETURN</p>}
                     </div>
                 </div>

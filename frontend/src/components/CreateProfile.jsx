@@ -15,6 +15,7 @@ export default function CreateProfile() {
         setLocation(event.target.value);
     }
     function handlePictureChange(event) {
+
         if (event.target.files[0]) {
             setImage(event.target.files[0]);
         }
@@ -76,7 +77,7 @@ export default function CreateProfile() {
         <>
             {loader && <Loader />}
             <Navbar />
-            <div className="px-[10vw] sm:pl-[18vw] md:pl-[20vw] lg:pl-[30vw] sm:pt-[4vh] lg:pt-[2vh]">
+            <div className="px-[10vw] sm:pl-[18vw] md:pl-[20vw] laptop:pl-[30vw] sm:pt-[4vh] laptop:pt-[2vh]">
                 <div className=" pt-7">
                     <h1 className="font-inter font-extrabold text-2xl md:text-3xl">Welcome! Let's create your profile</h1>
                     <p className="mt-5 font-inter">Let others get to know you better! You can do these later</p>
@@ -87,7 +88,7 @@ export default function CreateProfile() {
                         {image ? <img src={URL.createObjectURL(image)} alt="profilePhoto" className="rounded-full object-fit w-32 h-34" /> : <div className="border-dashed border-2 border-slate-300 p-12 rounded-full"><FontAwesomeIcon icon={faCamera} /></div>}
                         <div className="pt-3">
                             <div className="border-2 px-2 py-2 rounded-md font-bold text-xs w-28 cursor-pointer text-center" onClick={handleChooseImageClick}><input id="fileInput" type="file" hidden onChange={handlePictureChange} />Choose Image</div>
-                            <div className="text-slate-400 font-bold text-xs sm:text-sm mt-5">&gt; Or choose one of our defaults</div>
+                            <div className="text-slate-400 font-bold text-xs sm:text-sm mt-5 cursor-pointer">&gt; Or choose one of our defaults</div>
                         </div>
                     </div>
                 </div>

@@ -2,6 +2,7 @@ import { useState } from 'react'
 import CreateProfile from './components/CreateProfile';
 import SignUp from './components/SignUp';
 import Reason from './components/Reason';
+import VerifyMail from "./components/VerifyMail";
 import './App.css'
 import {
   createBrowserRouter,
@@ -20,6 +21,10 @@ function App() {
     {
       path: '/reason',
       element: <Reason />
+    },
+    {
+      path: '/verify-mail',
+      element: <VerifyMail />
     }
   ]);
   return (
