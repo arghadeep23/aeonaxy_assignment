@@ -48,6 +48,12 @@ send the email to the intended client.
 <img width="800" height="700" src="https://github.com/arghadeep23/aeonaxy_assignment/assets/91934528/ebc79178-bae0-4061-8224-94e4d6d616cd">
 <img width="800" height="1100" src="https://github.com/arghadeep23/aeonaxy_assignment/assets/91934528/805b1e70-031f-4afc-8602-b90ebe11334e">
 
+### Data getting saved in Neon : 
+![image](https://github.com/arghadeep23/aeonaxy_assignment/assets/91934528/52cab089-38da-4259-8b83-847b3d316a47)
+
+### Thank You Email from Resend : 
+![aa5](https://github.com/arghadeep23/aeonaxy_assignment/assets/91934528/56591e3e-b9ef-4316-ad55-28db8aec7977)
+
 > Note : Since I am using a free tier of Resend, the sign up process can take time, as Resend may take more than 50 seconds due to inactivity.
 
 Created by Arghadeep Dey.
