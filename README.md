@@ -54,7 +54,7 @@ send the email to the intended client.
 ### Thank You Email from Resend : 
 ![aa5](https://github.com/arghadeep23/aeonaxy_assignment/assets/91934528/56591e3e-b9ef-4316-ad55-28db8aec7977)
 
-> Note : Since I am using a free tier of Resend, the sign up process can take time, as Resend may take more than 50 seconds due to inactivity.
+> Note : Since I am using a free tier of Render, the sign up process can take time, as Render may take more than 50 seconds due to inactivity.
 
 Created by Arghadeep Dey.
 
